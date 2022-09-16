@@ -1,9 +1,10 @@
+###### tags: `README`
 # 🗂 프로젝트 관리
 
 ## 🪧 목차
 - [📜 프로젝트 및 개발자 소개](#-프로젝트-및-개발자-소개)
 - [⚙️ 개발환경 및 라이브러리](#%EF%B8%8F-개발환경-및-라이브러리)
-- [⏰ 타임라인](#-타임라인)
+- [💡 키워드](#-키워드)
 - [📱 구현 화면](#-구현-화면)
 - [👩🏻‍💻 코드 설명](#-코드-설명)
 - [📁 폴더 구조](#-폴더-구조)
@@ -14,7 +15,7 @@
 <br>
 
 ## 📜 프로젝트 및 개발자 소개
-> **소개** : 프로젝트 할 일을 `TODO`-`DOING`-`DONE`으로 구분하여 관리할 수 있는 iPad 가로모드 전용 앱 
+> **소개** : 할 일을 `TODO`-`DOING`-`DONE`으로 구분하여 관리할 수 있는 iPad 가로모드 전용 앱 
 > **프로젝트 기간** : 2022.09.05 ~ 2022.09.16 
 > **리뷰어** : **라자냐**(@wonhee009)
 
@@ -30,39 +31,23 @@
 
 <br>
 
-## ⏰ 타임라인
-
-<details>
-<summary> 1주차 </summary>
-
-- 22.09.05 : 프로젝트 기술 선정 
-- 22.09.06 : 프로젝트에 라이브러러리 적용
-- 22.09.07 : 스텝 세분화, RxSwift 및 MVVM 공부
-- 22.09.08 : View 코드 구현, 테이블 뷰에 rx로 데이터 채우기
-
-</details>
-	
-
-<details>
-<summary> 2주차 </summary>
-
-- 22.09.13 : MVVM 구조 적용하는 리팩토링 및 PR 제출 
-
-
-</details>
-
+## 💡 키워드
+- **RxSwift**
+- **RxRelay**
+- **RxCocoa**
+- **SwiftLint**
+- **MVVM**
+- **UITableView**
+- **UIDatePicker**
+- **Localization**
+- **popover**
 <br>
 
 ## 📱 구현 화면
 
-**메인 화면**
-
-<img src = "https://i.imgur.com/GpXZ0iz.png" width="480" height="350">
-<br>
-
-**할 일 상세보기 및 생성**
-
-![](https://i.imgur.com/Ke9bPZc.gif)
+|**메인 화면** | **할 일 상세보기 및 생성** | 
+| -------- | -------- |
+|  <img src = "https://i.imgur.com/GpXZ0iz.png" width="480" height="350">|  ![](https://i.imgur.com/Ke9bPZc.gif) |
 
 <br>
 
@@ -76,57 +61,91 @@
 <br>
 
 ## 👩🏻‍💻 코드 설명
-**Model**
+
+<details>
+<summary> Model </summary>
+	
 - `Work` : 해야 할 일을 나타내는 모델 타입 [title, content, deadline]
 - `SampleData` : UI 구현을 확인하기 위한 샘플 데이터를 담은 타입
+	
+</details>
+
 <br>
 
-**View**
-- `ProjectManagerView` : [TODO, DOING, DONE]의 테이블 뷰를 가진 메인 화면에 보여지는 뷰
+<details>
+<summary> View </summary>
+	
+- `WorkTableView` : 할 일의 리스트를 표현하는 커스텀 테이블 뷰
 - `HeaderView` : [TODO, DOING, DONE]의 타이틀과 현재 셀 개수를 나타내는 뷰
 - `WorkTableViewCell` : 할 일의 내용을 표현하는 테이블 뷰 셀
-- `WorkManageView` : 할 일의 세부정보를 표현하거나, 새로운 할 일을 추가하는 뷰
+- `WorkManageView` : 할 일의 제목, 기한, 내용을 편집하는 뷰
+- `ProjectManagerViewController` : [TODO, DOING, DONE]의 테이블 뷰를 가진 메인 화면을 표현하는 뷰컨트롤러
+- `ManageWorkViewController` : 할 일의 세부정보를 표현하거나, 새로운 할 일을 추가하는 뷰컨트롤러
+	
+</details>
+
 <br>
 
-**ViewModel**
+<details>
+<summary> ViewModel </summary>
+	
 - `WorkViewModel` : 상태별 할 일의 데이터를 가지고 변경을 담당
+	
+</details>
+
 <br>
 
-**Extension**
+<details>
+<summary> Extension </summary>
+	
 - `Date` 
 	- `convertToRegion` : 지역에 따른 날짜 형식으로 변경하는 메서드
-	- `checkOverdue` : 오늘 날짜와 비교해 기한이 지났는지 판단하는 메서드
 - `UIView`
 	- `applyShadow` : 테두리에 그림자 효과를 넣어주는 메서드
+	
+</details>
+
+<br>
+
+<details>
+<summary> Util </summary>
+	
+- `DateManager` 
+	- `checkOverdue` : 오늘 날짜와 비교해 기한이 지났는지 판단하는 메서드
+	
+</details>
+
 <br>
 
 ## 📁 폴더 구조
-```
+```swift
 .
 ├── Application
-│   ├── AppDelegate.swift
-│   └── SceneDelegate.swift
+│	├── AppDelegate.swift
+│	└── SceneDelegate.swift
 ├── Base.lproj
 ├── Extension
-│   ├── Date+Extension.swift
-│   └── View+Extension.swift
+│	├── Date+Extension.swift
+│	└── View+Extension.swift
 ├── Info.plist
 ├── Model
-│   ├── SampleData.swift
-│   └── Work.swift
+│	├── SampleData.swift
+│	└── Work.swift
 ├── Resources
-│   ├── Assets.xcassets
-│   └── Base.lproj
-│       └── LaunchScreen.storyboard
+│	├── Assets.xcassets
+│	└── Base.lproj
+│		└── LaunchScreen.storyboard
+├── Util
+│	└── DateManager.swift
 ├── View
-│   ├── HeaderView.swift
-│   ├── ManageWorkViewController.swift
-│   ├── ProjectManagerView.swift
-│   ├── ProjectManagerViewController.swift
-│   ├── WorkManageView.swift
-│   └── WorkTableViewCell.swift
+│	├── HeaderView.swift
+│	├── ManageWorkViewController.swift
+│	├── ProjectManagerViewController.swift
+│	├── WorkManageView.swift
+│	├── WorkTableView.swift
+│	└── WorkTableViewCell.swift
 └── ViewModel
-    └── WorkViewModel.swift
+	└── WorkViewModel.swift
 ```
 
 <br>
