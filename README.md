@@ -3,7 +3,7 @@
 ## 🪧 목차
 - [📜 프로젝트 및 개발자 소개](#-프로젝트-및-개발자-소개)
 - [⚙️ 개발환경 및 라이브러리](#%EF%B8%8F-개발환경-및-라이브러리)
-- [⏰ 타임라인](#-타임라인)
+- [💡 키워드](#-키워드)
 - [📱 구현 화면](#-구현-화면)
 - [👩🏻‍💻 코드 설명](#-코드-설명)
 - [📁 폴더 구조](#-폴더-구조)
@@ -14,8 +14,8 @@
 <br>
 
 ## 📜 프로젝트 및 개발자 소개
-> **소개** : 프로젝트 할 일을 `TODO`-`DOING`-`DONE`으로 구분하여 관리할 수 있는 iPad 가로모드 전용 앱 
-> **프로젝트 기간** : 2022.09.05 ~ 2022.09.16 
+> **소개** : 할 일을 `TODO`-`DOING`-`DONE`으로 구분하여 관리할 수 있는 iPad 가로모드 전용 앱 
+> **프로젝트 기간** : 2022.09.05 ~ 2022.09.30
 > **리뷰어** : **라자냐**(@wonhee009)
 
 | **주디(Judy)** |
@@ -30,103 +30,136 @@
 
 <br>
 
-## ⏰ 타임라인
-
-<details>
-<summary> 1주차 </summary>
-
-- 22.09.05 : 프로젝트 기술 선정 
-- 22.09.06 : 프로젝트에 라이브러러리 적용
-- 22.09.07 : 스텝 세분화, RxSwift 및 MVVM 공부
-- 22.09.08 : View 코드 구현, 테이블 뷰에 rx로 데이터 채우기
-
-</details>
-	
-
-<details>
-<summary> 2주차 </summary>
-
-- 22.09.13 : MVVM 구조 적용하는 리팩토링 및 PR 제출 
-
-
-</details>
-
+## 💡 키워드
+- **`RxSwift`**
+- **`RxRelay`**
+- **`RxCocoa`**
+- **`SwiftLint`**
+- **`MVVM`**
+- **`UITableView`**
+- **`UIDatePicker`**
+- **`Localization`**
+- **`popover`**
 <br>
 
 ## 📱 구현 화면
 
-**메인 화면**
-
-<img src = "https://i.imgur.com/GpXZ0iz.png" width="480" height="350">
-<br>
-
-**할 일 상세보기 및 생성**
-
-![](https://i.imgur.com/Ke9bPZc.gif)
-
-<br>
-
-**지역별 날짜 표현**
-
+|**메인 화면** | **할 일 상세보기 및 생성** | 
+| -------- | -------- |
+|  <img src = "https://i.imgur.com/GpXZ0iz.png" width="480" height="350">|  ![](https://i.imgur.com/Ke9bPZc.gif) |
 
 | US로 설정한 메인화면 | US로 설정한 상세화면 | 
 | -------- | -------- |
 |  ![](https://i.imgur.com/nMvbIaa.png)|  ![](https://i.imgur.com/YT0Og7E.png) |
 
+| 새로운 할 일 생성 | 할 일 수정 | 
+| :--------: | :--------: |
+| ![](https://i.imgur.com/xwAX6GG.gif) |![](https://i.imgur.com/flJPZiB.gif)|
+
+| Edit을 누르면 편집 가능 | 할 일 삭제 | 
+| :--------: | :--------: |
+| ![](https://i.imgur.com/WeY4FIJ.gif)|  ![](https://i.imgur.com/1LacwO1.gif) |
+
+| 할 일 상태 변경 | 
+| :--------: | 
+|![](https://i.imgur.com/hug85LI.gif) |
+
 <br>
 
 ## 👩🏻‍💻 코드 설명
-**Model**
-- `Work` : 해야 할 일을 나타내는 모델 타입 [title, content, deadline]
+
+<details>
+<summary> Model </summary>
+	
+- `Work` : 해야 할 일을 나타내는 모델 타입 [id, title, content, deadline, state]
 - `SampleData` : UI 구현을 확인하기 위한 샘플 데이터를 담은 타입
+- `WorkState`: 일의 진행 상태를 표현하는 열거형 (todo, doing, done)
+
+<br>
+</details>
+
 <br>
 
-**View**
-- `ProjectManagerView` : [TODO, DOING, DONE]의 테이블 뷰를 가진 메인 화면에 보여지는 뷰
+<details>
+<summary> View </summary>
+	
+- `WorkTableView` : 할 일의 리스트를 표현하는 커스텀 테이블 뷰
 - `HeaderView` : [TODO, DOING, DONE]의 타이틀과 현재 셀 개수를 나타내는 뷰
 - `WorkTableViewCell` : 할 일의 내용을 표현하는 테이블 뷰 셀
-- `WorkManageView` : 할 일의 세부정보를 표현하거나, 새로운 할 일을 추가하는 뷰
+- `WorkManageView` : 할 일의 제목, 기한, 내용을 편집하는 뷰
+- `ProjectManagerViewController` : [TODO, DOING, DONE]의 테이블 뷰를 가진 메인 화면을 표현하는 뷰컨트롤러
+- `ManageWorkViewController` : 할 일의 세부정보를 표현하거나, 새로운 할 일을 추가하는 뷰컨트롤러
+	
+</details>
+
 <br>
 
-**ViewModel**
-- `WorkViewModel` : 상태별 할 일의 데이터를 가지고 변경을 담당
+<details>
+<summary> ViewModel </summary>
+	
+- `works` : 전체 할 일을 가진 `BehaviorRelay`
+	- `worksObservable` : 외부에서 사용할 `Observable`
+- `selectWork` : 인덱스(Int)와 상태로 `Work`를 찾아 반환하는 메서드
+- `editWork` : 할 일의 내용을 변경하는 메서드
+- `deleteWork` : 할 일을 삭제하는 메서드
+- `changeWorkState` : 특정 할 일의 상태를 변경하는 메서드
+	
+</details>
+
 <br>
 
-**Extension**
+<details>
+<summary> Extension </summary>
+	
 - `Date` 
 	- `convertToRegion` : 지역에 따른 날짜 형식으로 변경하는 메서드
-	- `checkOverdue` : 오늘 날짜와 비교해 기한이 지났는지 판단하는 메서드
 - `UIView`
 	- `applyShadow` : 테두리에 그림자 효과를 넣어주는 메서드
+	
+</details>
+
+<br>
+
+<details>
+<summary> Util </summary>
+	
+- `DateManager` 
+	- `checkOverdue` : 오늘 날짜와 비교해 기한이 지났는지 판단하는 메서드
+	
+</details>
+
 <br>
 
 ## 📁 폴더 구조
-```
+```swift
 .
 ├── Application
-│   ├── AppDelegate.swift
-│   └── SceneDelegate.swift
+│	├── AppDelegate.swift
+│	└── SceneDelegate.swift
 ├── Base.lproj
 ├── Extension
-│   ├── Date+Extension.swift
-│   └── View+Extension.swift
+│	├── Date+Extension.swift
+│	└── View+Extension.swift
 ├── Info.plist
 ├── Model
-│   ├── SampleData.swift
-│   └── Work.swift
+│	├── SampleData.swift
+│	├── Work.swift
+│	└── WorkState.swift
 ├── Resources
-│   ├── Assets.xcassets
-│   └── Base.lproj
-│       └── LaunchScreen.storyboard
+│	├── Assets.xcassets
+│	└── Base.lproj
+│		└── LaunchScreen.storyboard
+├── Util
+│	└── DateManager.swift
 ├── View
-│   ├── HeaderView.swift
-│   ├── ManageWorkViewController.swift
-│   ├── ProjectManagerView.swift
-│   ├── ProjectManagerViewController.swift
-│   ├── WorkManageView.swift
-│   └── WorkTableViewCell.swift
+│	├── HeaderView.swift
+│	├── ManageWorkViewController.swift
+│	├── ProjectManagerViewController.swift
+│	├── WorkManageView.swift
+│	├── WorkTableView.swift
+│	└── WorkTableViewCell.swift
 └── ViewModel
-    └── WorkViewModel.swift
+	└── WorkViewModel.swift
 ```
 
 <br>
@@ -223,7 +256,11 @@ Ruby 언어로 `installer`에서 프로젝트 설정을 불러와 다시 설정�
 <br>
 
 ### 3. 기한 비교
-오늘을 기준으로 기한이 지난 할 일의 날짜는 빨간색으로 표시해야 해서 `Date`를 extension하여 기한 지남 여부를 `Bool` 값으로 반환하는 `checkOverdue` 메서드를 구현했습니다. 처음에는 단순히 `Date()`와 대소비교를 하였는데, 오늘 날짜여도 시간이 지났으면 기한이 지났음으로 표시되는 문제가 있었습니다. 시간에 대한 기한 설정은 없으므로 날짜로만 비교하는게 맞다고 생각해 대소비교와 함께 오늘 날짜인지 비교하는 로직을 추가했습니다.
+
+<details>
+<summary> 내용보기 </summary>
+	
+<br>오늘을 기준으로 기한이 지난 할 일의 날짜는 빨간색으로 표시해야 해서 `Date`를 extension하여 기한 지남 여부를 `Bool` 값으로 반환하는 `checkOverdue` 메서드를 구현했습니다. 처음에는 단순히 `Date()`와 대소비교를 하였는데, 오늘 날짜여도 시간이 지났으면 기한이 지났음으로 표시되는 문제가 있었습니다. 시간에 대한 기한 설정은 없으므로 날짜로만 비교하는게 맞다고 생각해 대소비교와 함께 오늘 날짜인지 비교하는 로직을 추가했습니다.
 <br>
 
 ```swift
@@ -239,6 +276,75 @@ func checkOverdue() -> Bool {
 시간을 제외하고 날짜가 오늘과 같은지 비교하는 다양한 방법이 있지만 간단하게 미리 구현했던 `convertToRegion` 메서드로 `String`으로 변경된 날짜가 같은지 비교하는 방식으로 했습니다.
 <br>
 
+</details>
+<br>
+
+
+### 4. cell을 길게 누르는 제스쳐
+cell을 길게 누르면 popover가 뜨도록 하기 위해 cell에 `UILongPressGestureRecognizer`를 추가했습니다. 처음에는 제스쳐 하나를 선언해 모든 cell에 추가해주었더니 제대로 동작하지 않는 문제가 있었습니다.
+
+공식문서를 살펴보니 recognizer는 특정 뷰와 그 하위 뷰에만 적용이 가능함을 알 수 있었습니다. 
+> "A gesture recognizer operates on touches hit-tested to a specific view and all of that view’s subviews.""
+
+<br> 따라서 cell 별로 다른 제스처 recognizer를 가져야 하는데 매번 생성하는 코드를 작성하는 것은 비효율적이라 아래와 같이 클로저 형식으로 구현해 상태를 받아 새로운 `UILongPressGestureRecognizer`를 반환하도록 했습니다.
+<br>
+
+```swift
+let longGesture: (WorkState) -> UILongPressGestureRecognizer = { state in
+    switch state {
+    case .todo:
+        return UILongPressGestureRecognizer(target: self, action: #selector(self.showTodoPopView))
+    case .doing:
+        return UILongPressGestureRecognizer(target: self, action: #selector(self.showDoingPopView))
+    case .done:
+        return UILongPressGestureRecognizer(target: self, action: #selector(self.showDonePopView))
+    }
+}
+// ...
+
+cell.addGestureRecognizer(longGesture(item.state))
+```
+	
+</details>
+
+<br> 
+
+### 5. 재진입 문제
+할 일을 수정하는 코드를 작성하면서 콘솔창에 아래와 같은 경고가 발생했습니다.
+<br>
+
+![](https://i.imgur.com/YUa1Xsx.png)
+<br>
+
+```swift
+let works = BehaviorRelay<[Work]>(value: [])
+
+func editWork(_ work: Work, newWork: Work) {
+    works.map {
+        $0.map {
+            return $0.id == work.id ? newWork : $0
+        }
+    }.observe(on: MainScheduler.asyncInstance)
+    .take(1)
+    .bind(to: works)
+    .disposed(by: disposeBag)
+}
+```
+<br>
+
+스케줄을 `observe(on: MainScheduler.instance)`로 설정했을 때 이와 같은 경고가 발생하였고, 경고의 내용으로는 재진입과 관련된 문제로 만약 의도한 동작일 경우 `observe(on: ainScheduler.asyncInstance)`를 통해 경고를 해결할 수 있다고 하여 변경하니 경고는 더 이상 뜨지 않았습니다.
+<br>
+
+이유를 알아보니 다음과 같았습니다.
+
+`MainScheduler`에서 `asyncInstance`는 이벤트의 비동기 전달을 보장하고, `instance`는 이미 메인 스레드에 있는 경우 이벤트를 동기적으로 전달합니다.
+
+이미 메인 스레드에 있을 때 비동기 전달을 강제해야 할 때가 있는데, 드믈고 가능한 피하는 것이 좋지만 한 이벤트가 동일한 파이프라인에서 새 이벤트를 트리거하는 재귀 반응 파이프라인이 있는 경우입니다.
+
+이벤트가 동시에 발생하면 Rx 스트림이 깨지고 첫 번째 이벤트가 완료되기 전에 두 번째 이벤트를 전달하려 했다는 경고가 발생하는데 이때 `asyncInstance`으로 해당 사이클를 깰 수 있어 해결할 수 있었습니다.
+
+<br><br> 
+
 ## 🔗 참고 링크
 
 <details>
@@ -251,7 +357,8 @@ func checkOverdue() -> Bool {
 <details>
 <summary>[STEP 2]</summary>
 	
-[gRPC-cpp and gRPC-Core Value conversion build warnings](https://github.com/firebase/firebase-ios-sdk/issues/9790)<br>[CocoaPods 프로젝트에서 시뮬레이터 타겟 관련 워닝](https://bonoogi.postype.com/post/8832708)<br>[The iOS Simulator deployment target 'IPHONES_DEVELOPMENT_TARGET'](https://fomaios.tistory.com/entry/%ED%95%B4%EA%B2%B0%EB%B2%95-%ED%8F%AC%ED%95%A8-The-iOS-Simulator-deployment-target-IPHONESDEVELOPMENTTARGET-is-set-to-80but-the-range-of-suppoted-deployment-target-vesions-is-90-to-14499)<br>[Xcode 에서 Pod 프로젝트의 경고 표시 없애기](https://code.iamseapy.com/archives/174)<br>[shadow 그림자 효과 top, left, right, bottom 방향 주는 방법 ](https://ios-development.tistory.com/653)<br>[swift MVVM 정리 및 예제](https://42kchoi.tistory.com/292)
+[gRPC-cpp and gRPC-Core Value conversion build warnings](https://github.com/firebase/firebase-ios-sdk/issues/9790)<br>[CocoaPods 프로젝트에서 시뮬레이터 타겟 관련 워닝](https://bonoogi.postype.com/post/8832708)<br>[The iOS Simulator deployment target 'IPHONES_DEVELOPMENT_TARGET'](https://fomaios.tistory.com/entry/%ED%95%B4%EA%B2%B0%EB%B2%95-%ED%8F%AC%ED%95%A8-The-iOS-Simulator-deployment-target-IPHONESDEVELOPMENTTARGET-is-set-to-80but-the-range-of-suppoted-deployment-target-vesions-is-90-to-14499)<br>[Xcode 에서 Pod 프로젝트의 경고 표시 없애기](https://code.iamseapy.com/archives/174)<br>[shadow 그림자 효과 top, left, right, bottom 방향 주는 방법 ](https://ios-development.tistory.com/653)<br>[swift MVVM 정리 및 예제](https://42kchoi.tistory.com/292)<br>[MainScheduler.instance vs MainScheduler.asyncInstance](https://stackoverflow.com/questions/58332584/rxswift-mainscheduler-instance-vs-mainscheduler-asyncinstance)<br>[UIGestureRecognizer](https://developer.apple.com/documentation/uikit/uigesturerecognizer)<br>[Displaying transient content in a popover](https://developer.apple.com/documentation/uikit/windows_and_screens/displaying_transient_content_in_a_popover)<br>[tableViewCell handle both tap and longPress](https://stackoverflow.com/questions/37770240/how-to-make-tableviewcell-handle-both-tap-and-longpress)<br>[CorebitsSoftware/TrasitionInSwift](https://github.com/CorebitsSoftware/TrasitionInSwift/blob/master/TrasitionInSwift/ViewController.swift)
+
 
 	
 </details>
